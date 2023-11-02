@@ -7,9 +7,9 @@ import pgPromise from 'pg-promise';
 import Handlebars from 'handlebars';
 import 'dotenv/config';
 
-// const connectionString = process.env.DATABASE_URL;
-// const pgp = pgPromise();
-// const db = pgp(connectionString);
+const connectionString = process.env.DATABASE_URL;
+const pgp = pgPromise();
+const db = pgp(connectionString);
 
 const app = express();
 
