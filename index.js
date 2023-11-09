@@ -9,9 +9,23 @@ import 'dotenv/config';
 import cors from 'cors';
 
 
+// import and create instance for routes and queyr files
+import shoeApiQuery from './services/query.js';
+import shoeApiRoutes from './routes/routes.js';
+
+
+
+
 const connectionString = process.env.DATABASE_URL;
 const pgp = pgPromise({});
- const db = pgp(connectionString);
+const db = pgp(connectionString);
+
+
+
+const shoeQuery =  shoeApiQuery(db);
+// console.log(shoeQuery);
+const shoeRoute = shoeApiRoutes(shoeQuery);
+// console.log(shoeRoute);
 
 const app = express();
 
@@ -46,55 +60,20 @@ app.use(cors());
 
 
 // list all shoes in stock
-app.get('/api/shoes', async function (req, res) {
-  try {
-    const result = await db.any('SELECT * FROM shoes');
-    return res.json(result);
-  } catch (error) {
-    console.error('Error fetching shoes:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
+app.get('/api/shoes',shoeRoute.allShoesRoutes);
+
+
 // list all shoes for chosen brand
-app.get('/api/shoes/brand/:brandname', async function (req, res) {
-  try {
-    const brandName = req.params.brandname;
-    // console.log(brandName);
-    const result = await db.any('SELECT * FROM shoes WHERE brand = $1', brandName);
-    return res.json(result);
-  } catch (error) {
-    console.error('Error fetching shoes by brand:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
+app.get('/api/shoes/brand/:brandname', shoeRoute.filterBrand
+);
 
 
 
-// list all shoes for chosen size
-app.get('/api/shoes/size/:size', async function (req, res) {
-  try {
-    const shoeSize = req.params.size;
-    const result = await db.any('SELECT * FROM shoes WHERE size = $1', shoeSize);
-    return res.json(result);
-  } catch (error) {
-    console.error('Error fetching shoes by size:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
+// // list all shoes for chosen size
+app.get('/api/shoes/size/:size', shoeRoute.filterSize);
 
-// list all shoes for chosen brand and size
-app.get('/api/shoes/brand/:brandname/size/:size',async function (req,res){
-  try {
-    const brandName = req.params.brandname;
-    const shoeSize = req.params.size;
-
-    const result = await db.any('SELECT * FROM shoes WHERE brand = $1 AND size = $2', [brandName,shoeSize]);
-    return res.json(result);
-  } catch (error) {
-    console.error('Error fetching shoes by size:', error);
-    res.status(500).send('Internal Server Error');
-  }
-} );
+// // list all shoes for chosen brand and size
+app.get('/api/shoes/brand/:brandname/size/:size', shoeRoute.filterBrandAndSize );
 
 //this should update the stock when shoe is sold
 app.post('/api/shoes/sold/:id');
