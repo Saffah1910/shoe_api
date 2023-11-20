@@ -72,17 +72,20 @@ app.get('/api/shoes/brand/:brandname', shoeRoute.filterBrand
 // // list all shoes for chosen size
 app.get('/api/shoes/size/:size', shoeRoute.filterSize);
 
+// // list all shoes for chosen color
+app.get('/api/shoes/color/:color', shoeRoute.filterColor);
+
 // // list all shoes for chosen brand and size
-app.get('/api/shoes/brand/:brandname/size/:size', shoeRoute.filterBrandAndSize );
+app.get('/api/shoes/brand/:brandname/size/:size/color/:color', shoeRoute.filterBrandAndSizeAndColor);
 
 //this should update the stock when shoe is sold
 app.post('/api/shoes/sold/:id');
 
 // add a new shoe to the stock
-app.post('/api/shoes')
+app.post('/api/shoes',shoeRoute.addShoe)
 
 
-const PORT = process.env.PORT || 3014;
+const PORT = process.env.PORT || 3011;
 
 app.listen(PORT, function () {
   console.log('App started at port', PORT);

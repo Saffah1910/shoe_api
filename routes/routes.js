@@ -31,12 +31,10 @@ export default function shoeApiRoutes(shoeQuery) {
           res.status(500).send('Internal Server Error');
         }
       }
-
-      async function filterBrandAndSize(req, res) {
+      async function filterColor(req, res) {
         try {   
-            const brandName = req.params.brandname;
-            const shoeSize = req.params.size;
-          const result = await shoeQuery.getShoesByBrandAndSize(brandName,shoeSize);
+            const shoeColor = req.params.color;
+          const result = await shoeQuery.getShoesByColor(shoeColor);
           return res.json(result);
         } catch (error) {
           console.error('Error in allShoesRoutes:', error);
@@ -44,11 +42,39 @@ export default function shoeApiRoutes(shoeQuery) {
         }
       }
 
+      async function filterBrandAndSizeAndColor(req, res) {
+        try {   
+            const brandName = req.params.brandname;
+            const shoeSize = req.params.size;
+            const color = req.params.color;
+          const result = await shoeQuery.getShoesByBrandAndSizeAndColor(brandName,shoeSize,color);
+          return res.json(result);
+        } catch (error) {
+          console.error('Error in allShoesRoutes:', error);
+          res.status(500).send('Internal Server Error');
+        }
+      }
+
+async function addShoe (req, res) {
+  try {
+    const { color, brand, price, size, in_stock, image_url } = req.body;
+    const shoeInfo = [color, brand, price, size, in_stock, image_url];
+
+    await shoeQuery.addShoeToStock(shoeInfo);
+
+    res.status(201).json({ message: 'New shoe added to the stock' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
   
     return {
       allShoesRoutes,
       filterBrand,
       filterSize,
-      filterBrandAndSize
+      filterColor,
+      filterBrandAndSizeAndColor,
+      addShoe
     };
   }
