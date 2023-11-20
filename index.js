@@ -66,16 +66,27 @@ app.get('/api/shoes',shoeRoute.allShoesRoutes);
 // list all shoes for chosen brand
 app.get('/api/shoes/brand/:brandname', shoeRoute.filterBrand
 );
-
-
-
 // // list all shoes for chosen size
 app.get('/api/shoes/size/:size', shoeRoute.filterSize);
 
 // // list all shoes for chosen color
 app.get('/api/shoes/color/:color', shoeRoute.filterColor);
 
-// // list all shoes for chosen brand and size
+
+// // list all shoes for chosen brand and size 
+app.get('/api/shoes/brand/:brandname/size/:size', shoeRoute.filterBrandAndSize);
+
+
+// // list all shoes for chosen brand and color 
+app.get('/api/shoes/brand/:brandname/color/:color', shoeRoute.filterBrandAndColor);
+
+
+// // list all shoes for chosen size and color 
+app.get('/api/shoes/size/:size/color/:color', shoeRoute.filterSizeAndColor);
+
+
+
+// // list all shoes for chosen brand and size and color
 app.get('/api/shoes/brand/:brandname/size/:size/color/:color', shoeRoute.filterBrandAndSizeAndColor);
 
 //this should update the stock when shoe is sold
