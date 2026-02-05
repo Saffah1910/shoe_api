@@ -20,7 +20,7 @@
     "express-session": "^1.17.3",
     "handlebars": "^4.7.8",
     "mocha": "^10.2.0",
-    "pg-promise": "^11.5.4"
+    "pg-promise": "^11.15.0"
   },
   "engines": {
     "node": "24.x"
