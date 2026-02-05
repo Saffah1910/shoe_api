@@ -23,6 +23,6 @@
     "pg-promise": "^11.5.4"
   },
   "engines": {
-    "node": "18.16.1"
+    "node": "24.x"
   }
 }
